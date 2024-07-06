@@ -1,19 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css"
-function Header() {
+import { Link, useNavigate } from "react-router-dom";
+function Header(props) {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+    let localVaraible = JSON.parse(localStorage.getItem("isLoggedIn"));
+    console.log(localVaraible);
+    const renderButton = () => {
+        console.log(props.isLoggedIn);
+        console.log(isLoggedIn);
+        if (props.isLoggedIn||localVaraible) {
+            console.log(isLoggedIn);
+            return <button className="logout-btn" onClick={() => {
+                localStorage.setItem("isLoggedIn", false);
+                setIsLoggedIn(false);
+                navigate('/');
+                window.location.href = '/';
+            }}>Logout</button>
+        } else {
+            return "" ;
+        }
+    }
+
     return (
         <React.Fragment>
-            <div class="header-container">
-                <div class="header-left-side">
-                    <div class="header-logo-wrapper">
+            <div className="header-container">
+                <div className="header-left-side">
+                    <div className="header-logo-wrapper">
                         <img src="https://edu-web-fundamentals.web.app/static/media/logo.58169365.png" alt="Logo" />
-                        <p class="header-brand-name">Kafene</p>
+                        <p className="header-brand-name">Kafene</p>
                     </div>
-                    <nav>
-                        <a class="nav-bar " href="#orders">Orders</a>
-                        <a class="nav-bar " href="#products">Products</a>
-                        <a class="nav-bar " href="#users">Users</a>
-                    </nav>
+                    <div>
+                        <nav>
+                            <Link className="nav-bar" to={"/orders"}>Orders</Link>
+                            <Link className="nav-bar " to={"/products"}>Products</Link>
+                            <Link className="nav-bar " to={"/users"}>Users</Link>
+                            
+                        </nav>
+                    </div>
+                    <div className="logout-btn">
+                    {renderButton()}
+                    </div>
+                    
                 </div>
             </div>
         </React.Fragment>
